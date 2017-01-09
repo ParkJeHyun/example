@@ -1,0 +1,68 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+Article을 컨트롤 하기 위한 SQL문들의 xml파일
+-->
+
+<mapper namespace="kr.park.nhnpre.dao.ArticleDao">
+    <select id="getArticle" resultType="kr.park.nhnpre.artifacts.Article">
+        SELECT
+        id,
+        email,
+        password,
+        text,
+        add_time,
+        modify_time
+        FROM
+        article
+        ORDER BY
+        add_time DESC
+    </select>
+
+    <select id="getArticleById" parameterType="string" resultType="kr.park.nhnpre.artifacts.Article">
+        SELECT
+        id,
+        email,
+        password,
+        text,
+        add_time,
+        modify_time
+        FROM
+        article
+        WHERE
+        id = #{id}
+
+    </select>
+
+    <select id="getPasswordById" parameterType="string" resultType="string">
+        SELECT
+        password
+        FROM
+        article
+        WHERE
+        id = #{id}
+    </select>
+
+
+    <insert id="insertArticle" parameterType="kr.park.nhnpre.artifacts.Article">
+        INSERT
+        INTO article (email, password, text, add_time)
+        VALUE
+        (#{email}, #{password}, #{text}, now())
+    </insert>
+
+    <update id="modifyArticle" parameterType="kr.park.nhnpre.artifacts.Article">
+        UPDATE article
+        SET text = #{text}, modify_time = now()
+        WHERE id = #{id}
+
+    </update>
+
+    <delete id="removeArticleById" parameterType="string">
+        DELETE
+        FROM
+        article
+        WHERE
+        id = #{id}
+    </delete>
+</mapper>
