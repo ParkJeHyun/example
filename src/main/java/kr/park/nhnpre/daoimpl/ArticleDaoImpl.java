@@ -1,20 +1,22 @@
 package kr.park.nhnpre.daoimpl;
 
-import kr.park.nhnpre.artifacts.Article;
-import kr.park.nhnpre.dao.ArticleDao;
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import kr.park.nhnpre.artifacts.Article;
+import kr.park.nhnpre.dao.ArticleDao;
 
 /**
  * Created by Administrator on 2016-12-19.
  */
 @Repository("ArticleDao")
 public class ArticleDaoImpl implements ArticleDao {
+	
 	private static final Logger logger = LoggerFactory.getLogger(ArticleDaoImpl.class);
 
 	@Autowired
@@ -25,7 +27,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 
 	public List<Article> getAllArticle() {
-		// DB¿¡ ÀÖ´Â ¸ðµç Article ºÒ·¯¿À±â
+		// DBï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ Article ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 		List<Article> articles = sqlSession.selectList("getArticle");
 
 		logger.info("DaoImpl - getAll Size : " + articles.size());
@@ -34,7 +36,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 
 	public Article getArticleById(String id) {
-		// ID¿¡ ÇØ´çÇÏ´Â Article ºÒ·¯¿À±â
+		// IDï¿½ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ Article ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 		Article article = sqlSession.selectOne("getArticleById", id);
 
 		logger.info("DaoImpl - get Id : " + article.getId());
@@ -43,7 +45,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 
 	public String getPasswordById(String id) {
-		// ID¿¡ ÇØ´çÇÏ´Â ArticleÀÇ ºñ¹Ð¹øÈ£ ºÒ·¯¿À±â
+		// IDï¿½ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ Articleï¿½ï¿½ ï¿½ï¿½Ð¹ï¿½È£ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 		String password = sqlSession.selectOne("getPasswordById", id);
 
 		logger.info("DaoImpl - getPassword Password : " + password);
@@ -52,21 +54,21 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 
 	public Integer insertArticle(Article article) {
-		// Article Ãß°¡
+		// Article ï¿½ß°ï¿½
 		logger.info("DaoImpl - insert ");
 
 		return sqlSession.insert("insertArticle", article);
 	}
 
 	public Integer modifyArticle(Article article) {
-		// Article º¯°æ
+		// Article ï¿½ï¿½ï¿½ï¿½
 		logger.info("DaoImpl - modify Id : " + article.getId());
 
 		return sqlSession.update("modifyArticle", article);
 	}
 
 	public Integer deleteArticleById(String id) {
-		// ID¿¡ ÇØ´çÇÏ´Â Article »èÁ¦
+		// IDï¿½ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ Article ï¿½ï¿½ï¿½ï¿½
 		logger.info("DaoImpl - delete Id : " + id);
 
 		return sqlSession.delete("removeArticleById", id);
