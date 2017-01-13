@@ -5,8 +5,9 @@ import java.util.Date;
 /**
  * Created by Administrator on 2016-12-19.
  */
+ 
 public class Article {
-    String id;
+	String id;
     String email;
     String password;
     String text;
