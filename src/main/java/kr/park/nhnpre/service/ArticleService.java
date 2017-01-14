@@ -21,9 +21,8 @@ public class ArticleService {
     ArticleMapper articleMapper;
 
     public List<Article> getArticles() {
-        //Main 페이지에서 Article 리스트를 불러오기 위한 Controller
 		logger.info("Service - getAll");
-    	
+		
         return articleMapper.getArticleList();
     }
 

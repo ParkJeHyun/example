@@ -11,8 +11,8 @@ public class Article {
     String email;
     String password;
     String text;
-    Date add_time;
-    Date modify_time;
+    String add_time;
+    String modify_time;
 
     public String getId() {
         return id;
@@ -46,19 +46,21 @@ public class Article {
         this.text = text;
     }
 
-    public Date getAdd_time() {
+    public String getAdd_time() {
         return add_time;
     }
 
-    public void setAdd_time(Date add_time) {
-        this.add_time = add_time;
+    public void setAdd_time(String add_time) {
+    	this.add_time = add_time.substring(5, 9);
+    	this.add_time += add_time.substring(10, 16);
     }
 
-    public Date getModify_time() {
+    public String getModify_time() {
         return modify_time;
     }
 
-    public void setModify_time(Date modify_time) {
-        this.modify_time = modify_time;
+    public void setModify_time(String modify_time) {
+    	this.modify_time = modify_time.substring(5, 9);
+    	this.modify_time += modify_time.substring(10, 16);
     }
 }

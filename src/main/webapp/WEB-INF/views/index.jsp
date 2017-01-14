@@ -47,6 +47,7 @@
 
     </style>
 </head>
+
 <body>
 <div class="container">
     <form style="max-width: 600px; margin: auto; padding: 50px">
@@ -57,33 +58,10 @@
 
     </form>
 </div>
-<c:forEach var="article" items="${articles}">
-    <div class="container">
-        <div id="textback">
-            <div class="row">
-                <div class="col-md-8">
-                    <p id="textemail">${article.email}</p>
-                </div>
-                <div class="col-md-4">
-                    <button class="btn btn-danger" style="float: right;" onclick="get_password(${article.id}, 0)">삭제</button>
-                    <button class="btn btn-warning" style="float: right; margin-right: 5px" onclick="get_password(${article.id}, 1)">수정</button>
-                </div>
-            </div>
-            <div style="text-align: right">
-                등록 시각 : <fmt:formatDate value="${article.add_time}" pattern="MM-dd hh:mm"/>
-            </div>
-            <c:if test="${not empty article.modify_time}">
-                <div style="text-align: right">
-                    수정 시각 : <fmt:formatDate value="${article.modify_time}" pattern="MM-dd hh:mm"/>
-                </div>
-            </c:if>
-            <div class="row">
-                <p id="textbody">${article.text}</p>
-            </div>
-        </div>
-    </div>
-</c:forEach>
+<div class="container" id="list">
+</div>
 </body>
+
 <div class="modal fade" id="password_modal">
     <h3>비밀번호를 입력해주세요.</h3>
     <form id="password_form">
@@ -106,50 +84,37 @@
     </form>
 </div>
 
-
 <script src="resources/jquery/jquery-3.1.1.min.js"></script>
 <script src="resources/bootstrap/js/bootstrap.min.js"></script>
+<script src="resources/js/article.js"></script>
+<script src="resources/js/script.js"></script>
 <script>
+	show_list("list");
     var password;
     var click_flag;//0->삭제, 1->수정
     var change_id;//변경 혹은 삭제할 Article의 ID
-
+    
     function add_article() {
         var form = $('form').serialize();
-        $.ajax({
-            url: '/nhnpre/add',
-            type: 'POST',
-            data: form,
-            success: function (responseData) {
-                if(responseData == 1){
-                    alert("등록되었습니다.");
-                    window.location.href = '/nhnpre';
-                }
-                else if(responseData == 2){
-                    alert("Email 형식이 잘못 되었습니다.");
-                }
-            },
-            error: function (request, status, error) {
-                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        ajax_hanlder('/nhnpre/api/article/add','POST', form, function (responseData) {
+            if(responseData == 1){
+                alert("등록되었습니다.");
+                window.location.href = '/nhnpre';
             }
-        })
+            else if(responseData == 2){
+                alert("Email 형식이 잘못 되었습니다.");
+            }
+        });
     }
 
     function get_password(id, flag) {
         //ID에 해당하는 비밀번호 불러와서 password변수에 저장
         click_flag = flag;
         change_id = id;
-        $.ajax({
-            url: '/nhnpre/password/'+id,
-            type: 'get',
-            success: function (responseData) {
-                password = responseData;
-                $('#password_modal').modal();
-            },
-            error: function (request, status, error) {
-                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-            }
-        })
+        ajax_hanlder('/nhnpre/api/article/password/'+id, 'get', function (responseData) {
+            	password = responseData;
+            	$('#password_modal').modal();
+        	});
     }
 
     function change_article() {
@@ -158,16 +123,12 @@
             //사용자가 입력한 password가 Database에서 불러온 password와 같을 때
             if(click_flag == 0){
                 //삭제
-                $.ajax({
-                    url: '/nhnpre/delete/'+change_id,
-                    type: 'delete',
-                    success: function (response) {
-                        if(response == 1){
-                            alert("삭제가 완료 되었습니다.");
-                            window.location.href = '/nhnpre';
-                        }
+                ajax_hanlder('/nhnpre/api/article/delete/' + change_id, 'delete', function (response) {
+                    if(response == 1){
+                        alert("삭제가 완료 되었습니다.");
+                        window.location.href = '/nhnpre';
                     }
-                })
+                });
             }
             else {
                 //수정
@@ -182,19 +143,12 @@
 
     function modify_article() {
         var text = $('#input_text').val();
-
-        $.ajax({
-            url: '/nhnpre/modify/'+change_id,
-            type: 'put',
-            data: text,
-            success: function (response) {
-                if(response == 1){
-                    alert("변경이 완료 되었습니다.");
-                    window.location.href = '/nhnpre';
-                }
-            }
-        })
+        ajax_hanlder('/nhnpre/api/article/modify/'+change_id, 'put', text, function (response) {
+            if(response == 1){
+                alert("변경이 완료 되었습니다.");
+                window.location.href = '/nhnpre';
+            	}
+        	});
     }
-
 </script>
 </html>
