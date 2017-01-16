@@ -76,6 +76,7 @@ public interface ArticleMapper {
 			BEGIN();
 			UPDATE("`article`");
 			SET("text = #{text}");
+			SET("modify_time = now()");
 			WHERE("id = #{id}");
 			
 			return SQL();
