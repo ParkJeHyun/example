@@ -31,8 +31,8 @@ public interface ArticleMapper {
 	
 	@DeleteProvider(type=Provider.class, method="deleteArticle")
 	int deleteArticle(String id);
-	
-	
+
+	//
 	public static class Provider {
 		public static String getArticleList() {
 			BEGIN();
